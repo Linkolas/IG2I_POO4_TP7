@@ -14,5 +14,6 @@ import tp_poo_7.metier.User;
  * @author Nicolas
  */
 public interface UserDao extends Dao<User> {
-
+    
+    public User verifDanger(String login, String password);
 }

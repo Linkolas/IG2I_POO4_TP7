@@ -27,5 +27,11 @@ public class JpaUserDao extends JpaDao<User> implements UserDao {
     public JpaUserDao() {
         super(User.class);
     }
-    
+
+    @Override
+    public User verifDanger(String login, String password) {
+        String str = "SELECT u FROM \"User\" u WHERE u.login = ’" + login + "’ AND u.password = ’" + password + "’";
+        User users = (User) em.createQuery(str).getSingleResult();
+        return users; 
+    }
 }

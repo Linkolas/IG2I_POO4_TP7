@@ -19,7 +19,7 @@ import javax.persistence.Query;
 public abstract class JpaDao<T> implements Dao<T> {
 
     EntityManagerFactory emf = null;
-    EntityManager em = null;
+    public EntityManager em = null;
     EntityTransaction et = null;
     
     Class<T> classe;
@@ -56,7 +56,7 @@ public abstract class JpaDao<T> implements Dao<T> {
 
     @Override
     public Collection<T> findAll() {
-        Query createQuery = em.createQuery("select t from " + classe.getSimpleName() + " t");
+        Query createQuery = em.createQuery("select t from \"" + classe.getSimpleName() + "\" t");
         return createQuery.getResultList();
     }
 
@@ -98,7 +98,7 @@ public abstract class JpaDao<T> implements Dao<T> {
         
         try {
             et.begin();
-            Query createQuery = em.createQuery("delete from " + classe.getSimpleName());
+            Query createQuery = em.createQuery("delete from \"" + classe.getSimpleName()+"\"");
             createQuery.executeUpdate();
             et.commit();
             
