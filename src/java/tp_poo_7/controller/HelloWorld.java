@@ -41,7 +41,11 @@ public class HelloWorld extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet HelloWorld</h1>");
             out.println("<p>Ma première servlet à IG2I</p>");
-            out.println("<p>Méthode utilisée : " + method + "</p>");
+            out.println("<p>");
+            out.println(    "Méthode utilisée : " + method);
+            out.println(    "<br/>Nom : " + request.getParameter("name"));
+            out.println(    "<br/>Prénom : " + request.getParameter("first_name"));
+            out.println("</p>");
             out.println("</body>");
             out.println("</html>");
         }
