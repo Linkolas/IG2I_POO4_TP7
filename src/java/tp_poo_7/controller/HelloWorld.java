@@ -24,10 +24,11 @@ public class HelloWorld extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
+     * @param method GET|POST
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, String method)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -40,6 +41,7 @@ public class HelloWorld extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet HelloWorld</h1>");
             out.println("<p>Ma première servlet à IG2I</p>");
+            out.println("<p>Méthode utilisée : " + method + "</p>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +59,7 @@ public class HelloWorld extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, "GET");
     }
 
     /**
@@ -71,7 +73,7 @@ public class HelloWorld extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, "POST");
     }
 
     /**
