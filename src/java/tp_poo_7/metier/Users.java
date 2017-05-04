@@ -21,12 +21,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Nicolas
  */
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "User.findAll", query = "SELECT a FROM User a")
-    , @NamedQuery(name = "User.findById", query = "SELECT a FROM User a WHERE a.id = :id")})
-public class User implements Serializable {
+      @NamedQuery(name = "Users.findAll", query = "SELECT a FROM Users a")
+    , @NamedQuery(name = "Users.findById", query = "SELECT a FROM Users a WHERE a.id = :id")})
+public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class User implements Serializable {
     private String password;
     
     @Column(name = "USER_ROLE")
-    private Role user_role;
+    private String user_role;
     
 
     public int getId() {
@@ -67,17 +67,28 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Role getUser_role() {
+    public String getUser_role() {
         return user_role;
     }
 
-    public void setUser_role(Role user_role) {
+    public void setUser_role(String user_role) {
         this.user_role = user_role;
     }
 
     static public enum Role {
-        USER,
-        ADMIN;
+        USER("USER"),
+        ADMIN("ADMIN");
+        
+        private String name = "";
+        
+        Role(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
     
 }

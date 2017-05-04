@@ -42,6 +42,7 @@ public abstract class JpaDao<T> implements Dao<T> {
             et.commit();
             
         } catch (Exception ex) {
+            System.out.println("Error when persisting data.");
             et.rollback();
             retour = false;
         }
@@ -56,7 +57,7 @@ public abstract class JpaDao<T> implements Dao<T> {
 
     @Override
     public Collection<T> findAll() {
-        Query createQuery = em.createQuery("select t from \"" + classe.getSimpleName() + "\" t");
+        Query createQuery = em.createQuery("select t from " + classe.getSimpleName() + " t");
         return createQuery.getResultList();
     }
 
@@ -98,7 +99,7 @@ public abstract class JpaDao<T> implements Dao<T> {
         
         try {
             et.begin();
-            Query createQuery = em.createQuery("delete from \"" + classe.getSimpleName()+"\"");
+            Query createQuery = em.createQuery("delete from " + classe.getSimpleName()+"");
             createQuery.executeUpdate();
             et.commit();
             

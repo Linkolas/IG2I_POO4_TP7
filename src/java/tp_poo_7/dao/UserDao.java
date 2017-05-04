@@ -7,13 +7,13 @@ package tp_poo_7.dao;
 
 import java.util.Collection;
 import tp_poo4_4.dao.Dao;
-import tp_poo_7.metier.User;
+import tp_poo_7.metier.Users;
 
 /**
  *
  * @author Nicolas
  */
-public interface UserDao extends Dao<User> {
+public interface UserDao extends Dao<Users> {
     
-    public User verifDanger(String login, String password);
+    public Users verifDanger(String login, String password);
 }

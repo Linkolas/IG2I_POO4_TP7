@@ -7,10 +7,16 @@ package tp_poo_7.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import tp_poo4_4.dao.DaoFactory;
+import tp_poo_7.dao.UserDao;
+import tp_poo_7.metier.Users;
 
 /**
  *
@@ -18,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Controller extends HttpServlet {
 
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,11 +39,14 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        this.request = request;
+        this.response = response;
+        
         String action = request.getParameter("action");
         try (PrintWriter out = response.getWriter()) {
             switch(action){
                 case "login" :
-                    doVerif(request, response); /* méthode vérif utilisateur */
+                    doVerif(); /* méthode vérif utilisateur */
                     break;
                 case "logout" :
                     //doLogout(request, response);
@@ -60,14 +72,55 @@ public class Controller extends HttpServlet {
         }
     }
     
-    private void doVerif(HttpServletRequest request, HttpServletResponse response){
+    private void doVerif(){
         //verification utilisateur
-        //if(inconnu) forward(login-jsp);
-        //if(isAdmin)
-        //forward(admin.jsp);
-        //else forward(client.jsp);
+        String login = request.getParameter("login");
+        String passw = request.getParameter("password");
+        
+        UserDao userDao = DaoFactory
+                .getDaoFactory(DaoFactory.PersistenceType.JPA)
+                .getUserDao();
+        
+        if(userDao.findAll().isEmpty()) {
+            System.out.println("Create user");
+            Users us = new Users();
+            us.setLogin("Login");
+            us.setPassword("Password");
+            us.setUser_role(Users.Role.USER.name());
+            userDao.create(us);
+        }
+        
+        Users user = userDao.verifDanger(login, passw);
+        
+        if(user == null) {
+            request.setAttribute("error", "Bad credentials.");
+            
+            forwardTo("/vue/login.jsp");
+            return;
+        }
+        
+        if(user.getUser_role().equals(Users.Role.ADMIN.name())) {
+            
+            forwardTo("/vue/admin.jsp");
+            return;
+        }
+        
+        forwardTo("/vue/client.jsp");
+        
     }
 
+    private void forwardTo(String url) {
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+
+        try {
+            rd.forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -5,14 +5,15 @@
  */
 package tp_poo_7.dao;
 
+import javax.persistence.NoResultException;
 import tp_poo4_4.dao.JpaDao;
-import tp_poo_7.metier.User;
+import tp_poo_7.metier.Users;
 
 /**
  *
  * @author Nicolas
  */
-public class JpaUserDao extends JpaDao<User> implements UserDao {
+public class JpaUserDao extends JpaDao<Users> implements UserDao {
     
     private static JpaUserDao instance = null;
     
@@ -25,13 +26,18 @@ public class JpaUserDao extends JpaDao<User> implements UserDao {
     }
     
     public JpaUserDao() {
-        super(User.class);
+        super(Users.class);
     }
 
     @Override
-    public User verifDanger(String login, String password) {
-        String str = "SELECT u FROM \"User\" u WHERE u.login = ’" + login + "’ AND u.password = ’" + password + "’";
-        User users = (User) em.createQuery(str).getSingleResult();
+    public Users verifDanger(String login, String password) {
+        String str = "SELECT u FROM Users u WHERE u.login = '" + login + "' AND u.password = '" + password + "'";
+        Users users = null;
+        try {
+            users = (Users) em.createQuery(str).getSingleResult();
+        } catch(NoResultException e) {
+            
+        }
         return users; 
     }
 }
