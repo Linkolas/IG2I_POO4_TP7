@@ -5,6 +5,8 @@
     <class>tp_poo4_4.metier.Atelier</class>
     <class>tp_poo4_4.metier.Tache</class>
     <class>tp_poo4_4.metier.Machine</class>
+    <class>tp_poo_7.metier.User</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/TP_POO4_4"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

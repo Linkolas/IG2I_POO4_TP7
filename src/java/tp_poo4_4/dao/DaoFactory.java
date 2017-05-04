@@ -5,6 +5,8 @@
  */
 package tp_poo4_4.dao;
 
+import tp_poo_7.dao.UserDao;
+
 /**
  *
  * @author Nicolas
@@ -16,6 +18,8 @@ public abstract class DaoFactory {
     public abstract MachineDao getMachineDao();
     
     public abstract TacheDao getTacheDao();
+    
+    public abstract UserDao getUserDao();
     
     public enum PersistenceType {
         JPA;
